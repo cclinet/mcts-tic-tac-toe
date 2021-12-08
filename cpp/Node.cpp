@@ -14,7 +14,7 @@ void Node::expansion() {
         for (const auto &pos: game_state->legal_position()) {
             unique_ptr<GameState> new_game_state{new GameState{*game_state}};
             new_game_state->board[pos] = GameState::Piece::Cross;
-            children.emplace_back(make_unique<Node>(this, new_game_state));
+            children.emplace_back(make_shared<Node>(enable_shared_from_this<Node>::weak_from_this(), new_game_state));
         }
 }
 void Node::simulation() {}
@@ -25,9 +25,9 @@ bool Node::is_expanded() {
 }
 
 float Node::ucb() {
-    return static_cast<float>(n_win) / static_cast<float>(n_visit) + sqrt(2 * log(parent->n_visit) / static_cast<float>(n_win));
+    return static_cast<float>(n_win) / static_cast<float>(n_visit) + sqrt(2 * log(parent.lock()->n_visit) / static_cast<float>(n_win));
 }
 
 
-Node::Node() : parent(nullptr), game_state(make_unique<GameState>()) {}
-Node::Node(Node *parent, unique_ptr<GameState> &game_state) : parent(parent), game_state(move(game_state)){};
+Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()) {}
+Node::Node(shared_ptr<Node> parent, unique_ptr<GameState> &game_state) : parent(parent), game_state(move(game_state)){};

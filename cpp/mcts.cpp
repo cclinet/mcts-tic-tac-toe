@@ -23,5 +23,4 @@ PYBIND11_MODULE(mcts, m) {
             .value("Null", GameState::Piece::Null)
             .value("Cross", GameState::Piece::Cross)
             .value("Circle", GameState::Piece::Circle);
-    m.def("mcts", &mcts, "run mcts");
 }
