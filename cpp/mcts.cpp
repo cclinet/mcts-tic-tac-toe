@@ -1,13 +1,25 @@
+#include "GameState.h"
+#include "Node.h"
+#include <algorithm>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
+using namespace std;
 namespace py = pybind11;
 
-int add(int i, int j) {
-    return i + j;
+
+void mcts() {
 }
 
-PYBIND11_MODULE(example, m) {
-    m.doc() = "pybind11 example plugin"; // optional module docstring
+PYBIND11_MODULE(mcts, m) {
+    m.doc() = "MCTS C++ bind using pybind11";
+    py::class_<GameState> game_state(m, "GameState");
+    game_state.def(py::init<>());
+    game_state.def_readwrite("board", &GameState::board);
 
-    m.def("add", &add, "A function which adds two numbers");
+    py::enum_<GameState::Piece>(game_state, "Piece")
+            .value("Null", GameState::Piece::Null)
+            .value("Cross", GameState::Piece::Cross)
+            .value("Circle", GameState::Piece::Circle);
+    m.def("mcts", &mcts, "run mcts");
 }

@@ -8,5 +8,5 @@ set(pybind11_DIR "/Users/cclin/opt/miniconda3/envs/tic-tac-toe/lib/python3.9/sit
 find_package(Python COMPONENTS Interpreter Development)
 find_package(pybind11 CONFIG)
 
-pybind11_add_module(mcts mcts.cpp)
+pybind11_add_module(mcts mcts.cpp GameState.cpp Node.cpp)
 target_include_directories(mcts PUBLIC include)
