@@ -16,6 +16,7 @@ public:
 public:
     GameState();
     explicit GameState(const array<uint8_t, 9> &board);
+    GameState (const GameState &obj);
     ~GameState();
     bool is_terminal();
     uint8_t judge();

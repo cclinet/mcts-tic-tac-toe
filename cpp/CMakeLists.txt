@@ -10,3 +10,6 @@ find_package(pybind11 CONFIG)
 
 pybind11_add_module(mcts mcts.cpp GameState.cpp Node.cpp)
 target_include_directories(mcts PUBLIC include)
+
+add_executable(mcts_cpp main.cpp GameState.cpp Node.cpp)
+target_include_directories(mcts_cpp PUBLIC include)

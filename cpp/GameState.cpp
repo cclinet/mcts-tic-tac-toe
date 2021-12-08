@@ -62,3 +62,4 @@ vector<size_t> GameState::legal_position() {
     }
     return result;
 }
+GameState::GameState(const GameState &obj) = default;

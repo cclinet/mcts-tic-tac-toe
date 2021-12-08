@@ -8,8 +8,6 @@ using namespace std;
 namespace py = pybind11;
 
 
-void mcts() {
-}
 
 PYBIND11_MODULE(mcts, m) {
     m.doc() = "MCTS C++ bind using pybind11";
