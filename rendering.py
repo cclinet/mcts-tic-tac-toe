@@ -5,16 +5,30 @@ import sys
 
 class Board:
     def __init__(self):
+        self.board = np.zeros((3, 3), dtype=np.int8)
+
+    def __getitem__(self, item):
+        return self.board[item]
+
+    def __setitem__(self, key, value):
+        self.board[key] = value
+
+    def __repr__(self):
+        return str(self.board)
+
+
+class Rendering:
+    def __init__(self):
         pygame.init()
         self.size = 120, 120
         self.grid = 3
         self.margin = self.size[0] / 3
         self.screen = pygame.display.set_mode(self.size)
         self.cross = pygame.image.load("cross.png")
-        self.cross = pygame.transform.scale(self.cross, (20,20))
+        self.cross = pygame.transform.scale(self.cross, (20, 20))
         self.circle = pygame.image.load("circle.png")
-        self.circle = pygame.transform.scale(self.circle, (20,20))
-        self.board = np.zeros((self.grid, self.grid), dtype=np.int8)
+        self.circle = pygame.transform.scale(self.circle, (20, 20))
+        self.board = Board()
         self.board[1, 1] = 1
         self.board[1, 2] = 2
         self.board_list = []
@@ -53,5 +67,5 @@ class Board:
 
 
 if __name__ == "__main__":
-    board = Board()
-    board.draw()
+    rendering = Rendering()
+    rendering.draw()
