@@ -1,6 +1,7 @@
 #ifndef MCTS_GAMESTATE_H
 #define MCTS_GAMESTATE_H
 #include <array>
+#include <algorithm>
 using namespace std;
 
 class GameState {
@@ -14,9 +15,11 @@ public:
 
 public:
     GameState();
-    explicit GameState(array<Piece, 9> board);
+    explicit GameState(const array<uint8_t, 9> &board);
     ~GameState();
     bool is_terminal();
+    uint8_t judge();
+    vector<size_t> legal_position();
 };
 
 

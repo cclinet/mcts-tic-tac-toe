@@ -14,8 +14,12 @@ void mcts() {
 PYBIND11_MODULE(mcts, m) {
     m.doc() = "MCTS C++ bind using pybind11";
     py::class_<GameState> game_state(m, "GameState");
-    game_state.def(py::init<>());
-    game_state.def_readwrite("board", &GameState::board);
+    game_state.def(py::init<>())
+            .def_readwrite("board", &GameState::board)
+            .def(py::init<const array<uint8_t, 9> &>())
+            .def("is_terminal", &GameState::is_terminal)
+            .def("judge", &GameState::judge)
+            .def("legal_position", &GameState::legal_position);
 
     py::enum_<GameState::Piece>(game_state, "Piece")
             .value("Null", GameState::Piece::Null)
