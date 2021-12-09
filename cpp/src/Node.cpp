@@ -1,8 +1,6 @@
 #include "Node.h"
 
 
-
-
 shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
     if ((!node->is_expanded()) || (node->game_state->is_terminal())) {
         return node;
@@ -60,3 +58,5 @@ double Node::ucb() const {
 
 Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()), rng(seed) {}
 Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state, pos_type position) : parent(std::move(parent)), game_state(move(game_state)), position(position), rng(seed) {}
+Node::Node(weak_ptr<Node> parent, board_type board, pos_type position) : parent(std::move(parent)), game_state(make_unique<GameState>(board)), position(position), rng(seed) {
+}

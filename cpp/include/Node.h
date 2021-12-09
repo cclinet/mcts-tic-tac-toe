@@ -18,7 +18,8 @@ public:
 
 public:
     Node();
-    Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state, pos_type position);
+    Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state, pos_type position=255);
+    Node(weak_ptr<Node> parent, board_type board, pos_type position=255);
     shared_ptr<Node> selection(shared_ptr<Node> node);
     void expansion();
     int8_t simulation();
