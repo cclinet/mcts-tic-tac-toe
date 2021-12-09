@@ -9,6 +9,7 @@ void mcts() {
     shared_ptr<Node> tree = make_shared<Node>();
     for (int i = 0; i != 20; i++) {
         auto node = tree->selection(tree);
+        node->expansion();
         std::cout << *node->game_state<< endl;
         node->expansion();
     }

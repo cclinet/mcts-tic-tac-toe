@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 set(CMAKE_CXX_STANDARD 20)
 project(mcts)
-#set(Python_ROOT_DIR "/Users/cclin/opt/miniconda3/envs/tic-tac-toe/")
-#set(PYTHON_LIBRARY "/Users/cclin/opt/miniconda3/envs/tic-tac-toe/lib")
 
 find_package(pybind11 CONFIG)
 

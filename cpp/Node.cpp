@@ -15,7 +15,7 @@ void Node::expansion() {
     if (!game_state->is_terminal())
         for (const auto &pos: game_state->legal_position()) {
             unique_ptr<GameState> new_game_state{new GameState{*game_state}};
-            new_game_state->board[pos] = GameState::Piece::Cross;
+            new_game_state->board[pos] = game_state->next_piece();
             shared_ptr<Node> new_node = make_shared<Node>(weak_from_this(), new_game_state);
             children.emplace_back(new_node);
         }

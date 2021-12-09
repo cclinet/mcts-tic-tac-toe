@@ -2,8 +2,8 @@
 #define MCTS_GAMESTATE_H
 #include <algorithm>
 #include <array>
-#include <vector>
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class GameState {
@@ -15,7 +15,6 @@ public:
                  Cross = 1,
                  Circle = 2 };
 
-
     array<Piece, 9> board{};
 
 public:
@@ -26,6 +25,7 @@ public:
     bool is_terminal();
     uint8_t judge();
     vector<size_t> legal_position();
+    Piece next_piece();
 };
 
 

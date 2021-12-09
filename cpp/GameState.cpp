@@ -71,4 +71,11 @@ ostream &operator<<(ostream &out, const GameState &game_state) {
     }
     return out;
 }
+GameState::Piece GameState::next_piece() {
+    auto n_pieces = count_if(board.begin(), board.end(), [](Piece p){return p == Piece::Null;});
+    if (n_pieces % 2 == 0) {
+        return GameState::Circle;
+    }
+    return GameState::Cross;
+}
 GameState::GameState(const GameState &obj) = default;
