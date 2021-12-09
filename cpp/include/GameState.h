@@ -5,9 +5,11 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+using pos_type = u_int8_t;
+using player_type = u_int8_t;
+using piece_type = u_int8_t;
 
 class GameState {
-
     friend ostream &operator<<(ostream &out, const GameState &game_state);
 
 public:
@@ -19,12 +21,12 @@ public:
 
 public:
     GameState();
-    explicit GameState(const array<uint8_t, 9> &board);
+    explicit GameState(const array<piece_type, 9> &board);
     GameState(const GameState &obj);
     ~GameState();
     bool is_terminal();
-    uint8_t judge();
-    vector<u_int8_t> legal_position();
+    player_type judge();
+    vector<pos_type> legal_position();
     Piece next_piece();
 };
 

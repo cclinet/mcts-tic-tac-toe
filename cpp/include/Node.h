@@ -3,12 +3,13 @@
 #include "GameState.h"
 #include <cmath>
 #include <memory>
-#include <vector>
 #include <random>
+#include <vector>
 using namespace std;
 
 class Node : public enable_shared_from_this<Node> {
 public:
+
     vector<shared_ptr<Node>> children;
     weak_ptr<Node> parent;
     int n_visit{0};
@@ -16,7 +17,7 @@ public:
 
 public:
     Node();
-    Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state);
+    Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state);
     shared_ptr<Node> selection(shared_ptr<Node> node);
     void expansion();
     int8_t simulation();
@@ -24,10 +25,11 @@ public:
 
     unique_ptr<GameState> game_state;
 
-private:
-    bool is_expanded();
-    float ucb();
-    random_device rd;
+public:
+    bool is_expanded() const;
+    double ucb() const;
+    static constexpr int seed = 22;
+    //    random_device rd;
     mt19937 rng;
 };
 

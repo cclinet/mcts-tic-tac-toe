@@ -14,7 +14,7 @@ PYBIND11_MODULE(mcts, m) {
     py::class_<GameState> game_state(m, "GameState");
     game_state.def(py::init<>())
             .def_readwrite("board", &GameState::board)
-            .def(py::init<const array<uint8_t, 9> &>())
+            .def(py::init<const array<piece_type, 9> &>())
             .def("is_terminal", &GameState::is_terminal)
             .def("judge", &GameState::judge)
             .def("legal_position", &GameState::legal_position);
