@@ -24,7 +24,7 @@ public:
     ~GameState();
     bool is_terminal();
     uint8_t judge();
-    vector<size_t> legal_position();
+    vector<u_int8_t> legal_position();
     Piece next_piece();
 };
 

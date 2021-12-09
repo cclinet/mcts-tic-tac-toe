@@ -12,7 +12,7 @@ shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
     return selection(*max_child_pos);
 }
 void Node::expansion() {
-    if (!game_state->is_terminal())
+    if ((!game_state->is_terminal()) && (!is_expanded()))
         for (const auto &pos: game_state->legal_position()) {
             unique_ptr<GameState> new_game_state{new GameState{*game_state}};
             new_game_state->board[pos] = game_state->next_piece();
@@ -20,7 +20,25 @@ void Node::expansion() {
             children.emplace_back(new_node);
         }
 }
-void Node::simulation() {}
+int8_t Node::simulation() {
+    shared_ptr<GameState> new_game_state(new GameState(*game_state));
+    while (!new_game_state->is_terminal()) {
+        auto legal_pos = new_game_state->legal_position();
+        uniform_int_distribution<> dist(0, static_cast<u_int8_t>(legal_pos.size() - 1));
+//        u_int8_t pos = legal_pos[dist(rng)];
+        u_int8_t pos = legal_pos[0];
+        new_game_state->board[pos] = new_game_state->next_piece();
+    }
+    auto winner = new_game_state->judge();
+//    std::cout<<"board:\n"<<*new_game_state<<"winner: "<<(int)winner<<"    next player: "<<game_state->next_piece()<<endl;
+    if (winner == 0) {
+        return 0;
+    }
+    if (winner != static_cast<u_int8_t>(game_state->next_piece())) {
+        return 1;
+    }
+    return -1;
+}
 void Node::backpropagation() {}
 
 bool Node::is_expanded() {
@@ -32,5 +50,5 @@ float Node::ucb() {
 }
 
 
-Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()) {}
-Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state) : parent(std::move(parent)), game_state(move(game_state)){}
+Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()), rng(rd()) {}
+Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state) : parent(std::move(parent)), game_state(move(game_state)), rng(rd()) {}

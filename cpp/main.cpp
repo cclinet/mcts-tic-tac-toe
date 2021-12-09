@@ -10,8 +10,10 @@ void mcts() {
     for (int i = 0; i != 20; i++) {
         auto node = tree->selection(tree);
         node->expansion();
-        std::cout << *node->game_state<< endl;
+        std::cout << *node->game_state;
         node->expansion();
+        auto point = node->simulation();
+        std::cout<<(int)point<<endl;
     }
 }
 

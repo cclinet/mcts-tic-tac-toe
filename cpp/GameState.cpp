@@ -53,8 +53,8 @@ uint8_t GameState::judge() {
     }
     return 0;
 }
-vector<size_t> GameState::legal_position() {
-    vector<size_t> result{};
+vector<u_int8_t> GameState::legal_position() {
+    vector<u_int8_t> result{};
     for (auto i = 0; i != 9; ++i) {
         if (board[i] == Piece::Null) {
             result.emplace_back(i);

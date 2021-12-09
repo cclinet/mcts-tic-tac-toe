@@ -4,6 +4,7 @@
 #include <cmath>
 #include <memory>
 #include <vector>
+#include <random>
 using namespace std;
 
 class Node : public enable_shared_from_this<Node> {
@@ -18,7 +19,7 @@ public:
     Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state);
     shared_ptr<Node> selection(shared_ptr<Node> node);
     void expansion();
-    void simulation();
+    int8_t simulation();
     void backpropagation();
 
     unique_ptr<GameState> game_state;
@@ -26,6 +27,8 @@ public:
 private:
     bool is_expanded();
     float ucb();
+    random_device rd;
+    mt19937 rng;
 };
 
 
