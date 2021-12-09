@@ -5,7 +5,7 @@
 
 
 void mcts() {
-    auto game_state = make_unique<GameState>(array<piece_type, 9>{0, 0, 1, 1, 2, 2, 2, 1, 1});
+    auto game_state = make_unique<GameState>(array<piece_type, 9>{0, 0, 0, 0, 0, 0, 0, 0 ,0});
     shared_ptr<Node> tree = make_shared<Node>(make_shared<Node>(), move(game_state));
     for (int i = 0; i != 10000; i++) {
         auto node = tree->selection(tree);

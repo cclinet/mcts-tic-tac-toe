@@ -1,21 +1,6 @@
-import numpy as np
+
 import pygame
 import sys
-
-
-class Board:
-    def __init__(self):
-        self.board = np.zeros((3, 3), dtype=np.int8)
-
-    def __getitem__(self, item):
-        return self.board[item]
-
-    def __setitem__(self, key, value):
-        self.board[key] = value
-
-    def __repr__(self):
-        return str(self.board)
-
 
 class Rendering:
     def __init__(self):
@@ -28,11 +13,6 @@ class Rendering:
         self.cross = pygame.transform.scale(self.cross, (20, 20))
         self.circle = pygame.image.load("circle.png")
         self.circle = pygame.transform.scale(self.circle, (20, 20))
-        self.board = Board()
-        self.board[1, 1] = 1
-        self.board[1, 2] = 2
-        self.board_list = []
-        print(self.board)
 
     def draw(self):
         while True:
