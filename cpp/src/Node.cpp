@@ -1,22 +1,22 @@
 #include "Node.h"
 
-#include <utility>
+
 
 
 shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
     if ((!node->is_expanded()) || (node->game_state->is_terminal())) {
         return node;
     }
-    auto max_child_pos = max_element(node->children.begin(), node->children.end(),
+    auto max_ucb_child = max_element(node->children.begin(), node->children.end(),
                                      [](shared_ptr<Node> &a, shared_ptr<Node> &b) { return a->ucb() < b->ucb(); });
-    return selection(*max_child_pos);
+    return selection(*max_ucb_child);
 }
 void Node::expansion() {
     if ((!game_state->is_terminal()) && (!is_expanded()))
         for (const auto &pos: game_state->legal_position()) {
             unique_ptr<GameState> new_game_state{new GameState{*game_state}};
             new_game_state->board[pos] = game_state->next_piece();
-            shared_ptr<Node> child_node = make_shared<Node>(weak_from_this(), move(new_game_state));
+            shared_ptr<Node> child_node = make_shared<Node>(weak_from_this(), move(new_game_state), pos);
             children.emplace_back(child_node);
         }
 }
@@ -59,4 +59,4 @@ double Node::ucb() const {
 
 
 Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()), rng(seed) {}
-Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state) : parent(std::move(parent)), game_state(move(game_state)), rng(seed) {}
+Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> game_state, pos_type position) : parent(std::move(parent)), game_state(move(game_state)), position(position), rng(seed) {}

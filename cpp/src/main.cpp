@@ -1,26 +1,28 @@
 #include "GameState.h"
 #include "Node.h"
 #include <algorithm>
-#include <iostream>
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include "mcts.h"
+
+using namespace std;
+namespace py = pybind11;
 
 
-void mcts() {
-    auto game_state = make_unique<GameState>(array<piece_type, 9>{0, 0, 0, 0, 0, 0, 0, 0 ,0});
-    shared_ptr<Node> tree = make_shared<Node>(make_shared<Node>(), move(game_state));
-    for (int i = 0; i != 10000; i++) {
-        auto node = tree->selection(tree);
-        node->expansion();
-        auto point = node->simulation();
-        node->backpropagation(point);
-    }
-    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << *node->game_state << '\n'; });
-    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << node->n_visit << ' '; });
-    cout << endl;
-    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << node->ucb() << ' '; });
-}
+PYBIND11_MODULE(mcts, m) {
+    m.doc() = "MCTS C++ bind using pybind11";
+    py::class_<GameState> game_state(m, "GameState");
+    game_state.def(py::init<>())
+            .def_readwrite("board", &GameState::board)
+            .def(py::init<const array<piece_type, 9> &>())
+            .def("is_terminal", &GameState::is_terminal)
+            .def("judge", &GameState::judge)
+            .def("legal_position", &GameState::legal_position);
 
+    py::enum_<GameState::Piece>(game_state, "Piece")
+            .value("Null", GameState::Piece::Null)
+            .value("Cross", GameState::Piece::Cross)
+            .value("Circle", GameState::Piece::Circle);
 
-int main() {
-    mcts();
-    return 0;
+    m.def("run_mcts", &run_mcts);
 }

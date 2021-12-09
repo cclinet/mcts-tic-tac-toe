@@ -1,25 +1,29 @@
-#include "GameState.h"
-#include "Node.h"
-#include <algorithm>
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+#include "mcts.h"
 
-using namespace std;
-namespace py = pybind11;
+pos_type run_mcts(array<piece_type, 9> board) {
+    auto game_state = make_unique<GameState>(board);
+    shared_ptr<Node> tree = make_shared<Node>(make_shared<Node>(), move(game_state), 255);
+    for (int i = 0; i != 10000; i++) {
+        auto node = tree->selection(tree);
+        node->expansion();
+        auto point = node->simulation();
+        node->backpropagation(point);
+    }
+    shared_ptr<Node> max_visit_child = *max_element(tree->children.begin(), tree->children.end(),
+                                                    [](const shared_ptr<Node> &a, const shared_ptr<Node> &b) { return a->n_visit < b->n_visit; });
+
+    //    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << *node->game_state << '\n'; });
+    //    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << node->n_visit << ' '; });
+    //    cout << endl;
+    //    for_each((tree->children).begin(), (tree->children).end(), [](const shared_ptr<Node> &node) { cout << node->ucb() << ' '; });
+    return max_visit_child->position;
+}
 
 
-PYBIND11_MODULE(mcts, m) {
-    m.doc() = "MCTS C++ bind using pybind11";
-    py::class_<GameState> game_state(m, "GameState");
-    game_state.def(py::init<>())
-            .def_readwrite("board", &GameState::board)
-            .def(py::init<const array<piece_type, 9> &>())
-            .def("is_terminal", &GameState::is_terminal)
-            .def("judge", &GameState::judge)
-            .def("legal_position", &GameState::legal_position);
-
-    py::enum_<GameState::Piece>(game_state, "Piece")
-            .value("Null", GameState::Piece::Null)
-            .value("Cross", GameState::Piece::Cross)
-            .value("Circle", GameState::Piece::Circle);
+int main() {
+    array<piece_type, 9> b = {0,0,0,
+                              0,0,0,
+                              0,0,0};
+    cout<<(int)run_mcts(b)<<endl;
+    return 0;
 }

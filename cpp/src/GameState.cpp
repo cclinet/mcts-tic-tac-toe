@@ -61,7 +61,7 @@ GameState::GameState() {
     fill(board.begin(), board.end(), Null);
 }
 
-GameState::GameState(const array<piece_type, 9> &board) {
+GameState::GameState(const board_type &board) {
     for (int i = 0; i != 9; ++i) {
         this->board[i] = Piece(board[i]);
     }
