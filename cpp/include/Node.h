@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-class Node {
+class Node : public enable_shared_from_this<Node> {
 private:
     vector<shared_ptr<Node>> children;
     weak_ptr<Node> parent;
@@ -15,7 +15,7 @@ private:
 
 public:
     Node();
-    Node( shared_ptr<Node> parent, unique_ptr<GameState> &game_state);
+    Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state);
     shared_ptr<Node> selection(shared_ptr<Node> node);
     void expansion();
     void simulation();

@@ -1,5 +1,7 @@
 #include "Node.h"
 
+#include <utility>
+
 
 shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
     if ((!node->is_expanded()) || (node->game_state->is_terminal())) {
@@ -14,7 +16,8 @@ void Node::expansion() {
         for (const auto &pos: game_state->legal_position()) {
             unique_ptr<GameState> new_game_state{new GameState{*game_state}};
             new_game_state->board[pos] = GameState::Piece::Cross;
-            children.emplace_back(make_shared<Node>(enable_shared_from_this<Node>::weak_from_this(), new_game_state));
+            shared_ptr<Node> new_node = make_shared<Node>(weak_from_this(), new_game_state);
+            children.emplace_back(new_node);
         }
 }
 void Node::simulation() {}
@@ -30,4 +33,4 @@ float Node::ucb() {
 
 
 Node::Node() : parent(weak_ptr<Node>()), game_state(make_unique<GameState>()) {}
-Node::Node(shared_ptr<Node> parent, unique_ptr<GameState> &game_state) : parent(parent), game_state(move(game_state)){};
+Node::Node(weak_ptr<Node> parent, unique_ptr<GameState> &game_state) : parent(std::move(parent)), game_state(move(game_state)){}

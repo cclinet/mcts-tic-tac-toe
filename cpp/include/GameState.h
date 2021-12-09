@@ -1,10 +1,15 @@
 #ifndef MCTS_GAMESTATE_H
 #define MCTS_GAMESTATE_H
-#include <array>
 #include <algorithm>
+#include <array>
+#include <vector>
+#include <iostream>
 using namespace std;
 
 class GameState {
+
+    friend ostream &operator<<(ostream &out, const GameState &game_state);
+
 public:
     enum Piece { Null = 0,
                  Cross = 1,
@@ -16,7 +21,7 @@ public:
 public:
     GameState();
     explicit GameState(const array<uint8_t, 9> &board);
-    GameState (const GameState &obj);
+    GameState(const GameState &obj);
     ~GameState();
     bool is_terminal();
     uint8_t judge();

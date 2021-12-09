@@ -62,4 +62,13 @@ vector<size_t> GameState::legal_position() {
     }
     return result;
 }
+ostream &operator<<(ostream &out, const GameState &game_state) {
+    for (int i=0;i!=9;++i) {
+        out<<game_state.board[i];
+        if (i%3==2){
+            out<<'\n';
+        }
+    }
+    return out;
+}
 GameState::GameState(const GameState &obj) = default;
