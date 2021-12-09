@@ -39,7 +39,7 @@ player_type GameState::judge() {
             }
         }
     }
-    if ((board[0] == board[4]) && (board[0] == board[7])) {
+    if ((board[0] == board[4]) && (board[0] == board[8])) {
         player_type winner = win_func(board[0]);
         if (winner != 0) {
             return winner;
@@ -63,16 +63,16 @@ vector<pos_type> GameState::legal_position() {
     return result;
 }
 ostream &operator<<(ostream &out, const GameState &game_state) {
-    for (int i=0;i!=9;++i) {
-        out<<game_state.board[i];
-        if (i%3==2){
-            out<<'\n';
+    for (int i = 0; i != 9; ++i) {
+        out << game_state.board[i];
+        if (i % 3 == 2) {
+            out << '\n';
         }
     }
     return out;
 }
 GameState::Piece GameState::next_piece() {
-    auto n_pieces = count_if(board.begin(), board.end(), [](Piece p){return p == Piece::Null;});
+    auto n_pieces = count_if(board.begin(), board.end(), [](Piece p) { return p == Piece::Null; });
     if (n_pieces % 2 == 0) {
         return GameState::Circle;
     }

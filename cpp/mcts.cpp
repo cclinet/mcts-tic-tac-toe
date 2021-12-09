@@ -8,7 +8,6 @@ using namespace std;
 namespace py = pybind11;
 
 
-
 PYBIND11_MODULE(mcts, m) {
     m.doc() = "MCTS C++ bind using pybind11";
     py::class_<GameState> game_state(m, "GameState");

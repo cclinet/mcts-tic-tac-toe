@@ -28,25 +28,22 @@ int8_t Node::simulation() {
         size_t pos = legal_pos[dis(rng)];
         simulator_game_state->board[pos] = simulator_game_state->next_piece();
     }
-    auto winner = simulator_game_state->judge();
-    if (winner == 0) {
+    auto beats = simulator_game_state->judge();
+    if (beats == 0) {
         return 0;
     }
-    if (winner != static_cast<player_type>(game_state->next_piece())) {
+    if (beats != static_cast<player_type>(game_state->next_piece())) {
         return 1;
     }
     return -1;
 }
-void Node::backpropagation(int score) {
+void Node::backpropagation(int beats) {
     auto this_node = weak_from_this();
     while (auto ptr = this_node.lock()) {
         ptr->n_visit += 1;
-        if (score != -1)
-            ptr->value += 1;
-        else
-            ptr->value -= 1;
+        ptr->value += beats;
         this_node = ptr->parent;
-        score = -score;
+        beats = -beats;
     }
 }
 

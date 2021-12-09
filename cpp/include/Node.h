@@ -9,7 +9,6 @@ using namespace std;
 
 class Node : public enable_shared_from_this<Node> {
 public:
-
     vector<shared_ptr<Node>> children;
     weak_ptr<Node> parent;
     int n_visit{0};
@@ -21,7 +20,7 @@ public:
     shared_ptr<Node> selection(shared_ptr<Node> node);
     void expansion();
     int8_t simulation();
-    void backpropagation(int score);
+    void backpropagation(int beats);
 
     unique_ptr<GameState> game_state;
 
