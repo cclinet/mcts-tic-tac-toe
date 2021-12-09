@@ -14,7 +14,9 @@ void mcts() {
         node->expansion();
         auto point = node->simulation();
         std::cout<<(int)point<<endl;
+        node->backpropagation(point);
     }
+    for_each((tree->children).begin(), (tree->children).end(), [](shared_ptr<Node> node){cout<<node->n_visit<<' ';});
 }
 
 int main() {

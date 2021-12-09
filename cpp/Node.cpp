@@ -24,13 +24,13 @@ int8_t Node::simulation() {
     shared_ptr<GameState> new_game_state(new GameState(*game_state));
     while (!new_game_state->is_terminal()) {
         auto legal_pos = new_game_state->legal_position();
-        uniform_int_distribution<> dist(0, static_cast<u_int8_t>(legal_pos.size() - 1));
-//        u_int8_t pos = legal_pos[dist(rng)];
-        u_int8_t pos = legal_pos[0];
+        uniform_int_distribution<u_int8_t> dis(0, (legal_pos.size() - 1));
+        size_t pos = legal_pos[dis(rng)];
+        //        u_int8_t pos = legal_pos[0];
         new_game_state->board[pos] = new_game_state->next_piece();
     }
     auto winner = new_game_state->judge();
-//    std::cout<<"board:\n"<<*new_game_state<<"winner: "<<(int)winner<<"    next player: "<<game_state->next_piece()<<endl;
+    //    std::cout<<"board:\n"<<*new_game_state<<"winner: "<<(int)winner<<"    next player: "<<game_state->next_piece()<<endl;
     if (winner == 0) {
         return 0;
     }
@@ -39,14 +39,21 @@ int8_t Node::simulation() {
     }
     return -1;
 }
-void Node::backpropagation() {}
+void Node::backpropagation(int score) {
+    auto this_node = weak_from_this();
+    while (auto ptr = this_node.lock()) {
+        ptr->n_visit += 1;
+        ptr->value += score;
+        this_node = ptr->parent;
+    }
+}
 
 bool Node::is_expanded() {
     return !children.empty();
 }
 
 float Node::ucb() {
-    return static_cast<float>(n_win) / static_cast<float>(n_visit) + sqrt(2 * log(parent.lock()->n_visit) / static_cast<float>(n_win));
+    return static_cast<float>(value) / static_cast<float>(n_visit) + (sqrt(2 * log(parent.lock()->n_visit) / static_cast<float>(value)));
 }
 
 
