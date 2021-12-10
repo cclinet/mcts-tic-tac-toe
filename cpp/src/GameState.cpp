@@ -1,12 +1,12 @@
 #include "GameState.h"
 
 bool GameState::is_terminal() {
-    return all_of(board.begin(), board.end(), [](Piece i) { return i != Null; }) || judge() == 1 || judge() == 2;
+    return all_of(board.begin(), board.end(), [](piece_type i) { return i != 0; }) || judge() == 1 || judge() == 2;
 }
 
 player_type GameState::judge() {
-    auto select_winner = [](Piece &piece) -> player_type {
-        if (piece == Piece::Cross) {
+    auto select_winner = [](piece_type &piece) -> player_type {
+        if (piece == 1) {
             return 1;
         }
         return 2;
@@ -32,7 +32,7 @@ player_type GameState::judge() {
 vector<pos_type> GameState::legal_position() {
     vector<pos_type> result{};
     for (auto i = 0; i != 9; ++i) {
-        if (board[i] == Piece::Null) {
+        if (board[i] == 0) {
             result.emplace_back(i);
         }
     }
@@ -41,7 +41,7 @@ vector<pos_type> GameState::legal_position() {
 
 ostream &operator<<(ostream &out, const GameState &game_state) {
     for (int i = 0; i != 9; ++i) {
-        out << game_state.board[i];
+        out << (int)game_state.board[i];
         if (i % 3 == 2) {
             out << '\n';
         }
@@ -49,22 +49,19 @@ ostream &operator<<(ostream &out, const GameState &game_state) {
     return out;
 }
 
-GameState::Piece GameState::next_piece() {
-    auto n_pieces = count_if(board.begin(), board.end(), [](Piece p) { return p == Piece::Null; });
+piece_type GameState::next_piece() {
+    auto n_pieces = count_if(board.begin(), board.end(), [](piece_type p) { return p ==0 ; });
     if (n_pieces % 2 == 0) {
-        return GameState::Circle;
+        return 2;
     }
-    return GameState::Cross;
+    return 1;
 }
 
 GameState::GameState() {
-    fill(board.begin(), board.end(), Null);
+    fill(board.begin(), board.end(), 0);
 }
 
-GameState::GameState(const board_type &board) {
-    for (int i = 0; i != 9; ++i) {
-        this->board[i] = Piece(board[i]);
-    }
+GameState::GameState(const board_type &board): board(board){
 }
 
 GameState::GameState(const GameState &obj) = default;
