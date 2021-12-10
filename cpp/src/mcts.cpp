@@ -7,7 +7,6 @@ pos_type run_mcts(array<piece_type, 9> board) {
         node->expansion();
         auto point = node->simulation();
         node->backpropagation(point);
-        cout<<i<<' ';
     }
     shared_ptr<Node> max_visit_child = *max_element(tree->children.begin(), tree->children.end(),
                                                     [](const shared_ptr<Node> &a, const shared_ptr<Node> &b) { return a->n_visit < b->n_visit; });
