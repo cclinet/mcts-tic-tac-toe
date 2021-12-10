@@ -32,7 +32,8 @@ public:
     bool is_expanded() const;
     double ucb() const;
     static constexpr int seed = 22;
-    mt19937 rng{random_device{}()};
+//    mt19937 rng{random_device{}()};
+    mt19937 rng{0};
 };
 
 
