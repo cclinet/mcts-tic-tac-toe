@@ -9,6 +9,8 @@ shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
                                      [](shared_ptr<Node> &a, shared_ptr<Node> &b) { return a->ucb() < b->ucb(); });
     return selection(*max_ucb_child);
 }
+
+
 void Node::expansion() {
     if ((!game_state->is_terminal()) && (!is_expanded()))
         for (const auto &pos: game_state->legal_position()) {
@@ -17,6 +19,8 @@ void Node::expansion() {
             children.emplace_back(make_shared<Node>(weak_from_this(), board, pos));
         }
 }
+
+
 int8_t Node::simulation() {
     unique_ptr<GameState> simulator_game_state(new GameState(*game_state));
     while (!simulator_game_state->is_terminal()) {
@@ -34,6 +38,8 @@ int8_t Node::simulation() {
     }
     return -1;
 }
+
+
 void Node::backpropagation(int beats) {
     auto this_node = weak_from_this();
     while (auto ptr = this_node.lock()) {
@@ -44,9 +50,11 @@ void Node::backpropagation(int beats) {
     }
 }
 
+
 bool Node::is_expanded() const {
     return !children.empty();
 }
+
 
 double Node::ucb() const {
     if (n_visit == 0) { return numeric_limits<double>::max(); }
