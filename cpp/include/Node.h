@@ -26,7 +26,6 @@ public:
     void expansion();
     int8_t simulation();
     void backpropagation(int beats);
-
     unique_ptr<GameState> game_state;
 
 public:

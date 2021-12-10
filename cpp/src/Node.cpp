@@ -12,10 +12,9 @@ shared_ptr<Node> Node::selection(shared_ptr<Node> node) {
 void Node::expansion() {
     if ((!game_state->is_terminal()) && (!is_expanded()))
         for (const auto &pos: game_state->legal_position()) {
-            unique_ptr<GameState> new_game_state{new GameState{*game_state}};
-            new_game_state->board[pos] = game_state->next_piece();
-            shared_ptr<Node> child_node = make_shared<Node>(weak_from_this(), move(new_game_state), pos);
-            children.emplace_back(child_node);
+            board_type board = game_state->board;
+            board[pos] = game_state->next_piece();
+            children.emplace_back(make_shared<Node>(weak_from_this(), board, pos));
         }
 }
 int8_t Node::simulation() {
