@@ -19,10 +19,6 @@ PYBIND11_MODULE(mcts, m) {
             .def("judge", &GameState::judge)
             .def("legal_position", &GameState::legal_position);
 
-    py::enum_<GameState::Piece>(game_state, "Piece")
-            .value("Null", GameState::Piece::Null)
-            .value("Cross", GameState::Piece::Cross)
-            .value("Circle", GameState::Piece::Circle);
 
     m.def("run_mcts", &run_mcts);
 }

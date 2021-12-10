@@ -6,10 +6,7 @@ bool GameState::is_terminal() {
 
 player_type GameState::judge() {
     auto is_win = [](array<piece_type, 3> pieces) {
-        if ((pieces[0] != unoccupied) && (pieces[0] == pieces[1]) && (pieces[0] == pieces[2])) {
-            return true;
-        }
-        return false;
+        return (pieces[0] != unoccupied) && (pieces[0] == pieces[1]) && (pieces[0] == pieces[2]);
     };
     auto select_winner = [](piece_type &piece) -> player_type {
         if (piece == crosses) {
@@ -19,7 +16,7 @@ player_type GameState::judge() {
     };
 
     for (int i = 0; i != 3; ++i) {
-        if (is_win({board[3 * i], board[3 * i + 1], board[3 * i + 1]})) {
+        if (is_win({board[3 * i], board[3 * i + 1], board[3 * i +2]})) {
             return select_winner(board[3 * i]);
         }
         if (is_win({board[i], board[i + 3], board[i + 6]})) {
