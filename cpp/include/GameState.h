@@ -14,11 +14,11 @@ class GameState {
     friend ostream &operator<<(ostream &out, const GameState &game_state);
 
 public:
-    enum Piece { Null = 0,
-                 Cross = 1,
-                 Circle = 2 };
+//    enum Piece { Null = 0,
+//                 Cross = 1,
+//                 Circle = 2 };
 
-    array<Piece, 9> board{};
+    board_type board{};
 
 public:
     GameState();
@@ -30,7 +30,7 @@ public:
     bool is_terminal();
     player_type judge();
     vector<pos_type> legal_position();
-    Piece next_piece();
+    piece_type next_piece();
 };
 
 
