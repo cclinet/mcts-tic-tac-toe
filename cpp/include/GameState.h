@@ -9,15 +9,14 @@ using pos_type = uint8_t;
 using player_type = uint8_t;
 using piece_type = uint8_t;
 using board_type = array<piece_type, 9>;
+constexpr piece_type unoccupied = 0;
+constexpr piece_type crosses = 1;
+constexpr piece_type noughts = 2;
 
 class GameState {
     friend ostream &operator<<(ostream &out, const GameState &game_state);
 
 public:
-//    enum Piece { Null = 0,
-//                 Cross = 1,
-//                 Circle = 2 };
-
     board_type board{};
 
 public:
